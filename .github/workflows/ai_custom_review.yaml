@@ -1,35 +1,35 @@
 on: [pull_request]
 
 jobs:
-    custom-review:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            pull-requests: write
-        outputs:
-            comment: ${{ steps.create-comment.outputs.docker-comment }}
-        steps:
-            - uses: actions/checkout@v4
+  custom-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      comment: ${{ steps.create-comment.outputs.docker-comment }}
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Pull container
-              run: docker pull docker.io/lalucien/m324-exam:latest
+      - name: Pull container
+        run: docker pull docker.io/lalucien/m324-exam:latest
 
-            - name: Run container
-              id: create-comment
-              run: echo "docker-comment"=$(docker run docker.io/lalucien/m324-exam:latest ${{ github.event.pull_request.head.ref }}) >> "$GITHUB_OUTPUT"
+      - name: Run container
+        id: create-comment
+        run: echo "docker-comment"=$(docker run docker.io/lalucien/m324-exam:latest ${{ github.event.pull_request.head.ref }}) >> "$GITHUB_OUTPUT"
 
-    comment:
-        runs-on: ubuntu-latest
-        needs: custom-review
-        permissions:
-            contents: read
-            pull-requests: write
-        env:
-            COMMENT: ${{ needs.custom-review.outputs.comment }}
-        steps:
-            - name: Add comment to PR
-              uses: peter-evans/create-or-update-comment@v3
+  comment:
+    runs-on: ubuntu-latest
+    needs: custom-review
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      COMMENT: ${{ needs.custom-review.outputs.comment }}
+    steps:
+      - name: Add comment to PR
+        uses: peter-evans/create-or-update-comment@v3
 
-              with:
-                  issue-number: ${{ github.event.pull_request.number }}
-                  body: ${{ env.COMMENT }}
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ env.COMMENT }}
