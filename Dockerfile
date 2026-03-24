@@ -1,2 +1,5 @@
-FROM alpine:latest
-CMD ["echo", "This is an AI Review"]
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y git
+COPY script.bash .
+RUN chmod +x script.bash
+ENTRYPOINT ["./script.bash"]

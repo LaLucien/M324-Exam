@@ -16,7 +16,7 @@ jobs:
 
       - name: Run container
         id: create-comment
-        run: echo "docker-comment"=$(docker run docker.io/lalucien/m324-exam:latest) >> "$GITHUB_OUTPUT"
+        run: echo "docker-comment"=$(docker run docker.io/lalucien/m324-exam:latest ai-custom-review) >> "$GITHUB_OUTPUT"
 
   comment:
     runs-on: ubuntu-latest
