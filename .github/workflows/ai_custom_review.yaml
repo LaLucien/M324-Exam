@@ -1,0 +1,16 @@
+on: [pull_request]
+
+jobs:
+  custom-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull container
+        run: docker pull docker.io/lalucien/m324-exam:latest
+
+      - name: Run container
+        run: docker run docker.io/lalucien/m324-exam:latest >> ${GITHUB_OUTPUT}
