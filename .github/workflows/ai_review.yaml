@@ -1,0 +1,21 @@
+name: AI Code Review
+
+on: [pull_request]
+
+jobs:
+  code-review:
+    if: ${{ github.action.success  == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: sshnaidm/gpt-code-review-action@v3.0
+        with:
+          openai-key: ${{ secrets.OPENAI_API_KEY }}
+          model: "gpt-3.5-turbo"
+          # max-length: 8000
+          prompt: "Review this code changes and provide feedback on potential issues, improvements, and best practices. Focus on code quality, readability, and maintainability."
+          # post-if-error: false
+          review-title: "Automated Code Review"
