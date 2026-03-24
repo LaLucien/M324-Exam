@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   code-review:
-    if: ${{ github.event.pull_request.review_comments == 0 }}
+    if: ${{ github.action.success  == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
